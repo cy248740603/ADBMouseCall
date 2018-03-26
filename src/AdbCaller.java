@@ -1,18 +1,24 @@
 import java.awt.Point;
 import java.io.IOException;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class AdbCaller{
-
+    static Lock lock = new ReentrantLock();
     public static void call(Point m) {
         try {
+            lock.lock();
             Runtime.getRuntime().exec(Constants.ADB_PATH + " shell input touchscreen swipe "+ m.x +" "+ m.y +" "+ m.x +" "+ m.y +" 100");
         } catch (IOException e) {
             e.printStackTrace();
+        }finally{
+            lock.unlock();
         }
     }
 
     public static void printScreen() {
         try {
+            lock.lock();
             String[] args = new String[]{
                 "bash",
                 "-c",
@@ -28,6 +34,8 @@ public class AdbCaller{
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }finally{
+            lock.unlock();
         }
     }
 }

@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 import javax.security.auth.Refreshable;
@@ -56,7 +58,7 @@ public class Hello extends JFrame{
                     gTemp.drawImage(bufferedImage, 0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, null);
                     gTemp.dispose();
                     bufferedImage = newImage;
-                    g.drawImage(newImage, 0, 0, null);
+                    g.drawImage(bufferedImage, 0, 0, null);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -90,24 +92,40 @@ public class Hello extends JFrame{
                 System.out.println("first " + e.getX() + " " + e.getY());
                     fPoint = e.getPoint();
                     AdbCaller.call(changePoint(fPoint));
-                    try {
-                        Thread.sleep(2000);// wait for screencap
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
-                    refresh();
             }
-        });   
+        }); 
+        Timer timer = new Timer(true);
+        timer.schedule(new TimerTask(){
+        
+            @Override
+            public void run() {
+                refresh();
+            }
+        }, 1000, 1000);  
     }
+    /**
+     * 刷新屏幕
+     */
     public static void refresh(){
         AdbCaller.printScreen();
         JPanel jp = ((JPanel) Hello.hello.getContentPane().getComponent(0));
+        try {
+            Thread.sleep(500);// wait for screencap
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        }
         jp.validate();
         jp.repaint();
     }
+    /**
+     * 鼠标点击坐标缩放比例
+     */
     public static void setPointZoom(BufferedImage image){
         zoom = (float)image.getWidth()/(float)Constants.SCREEN_WIDTH;
     }
+    /**
+     * 坐标转化
+     */
     public static Point changePoint(Point point){
         point.x *= zoom; 
         point.y *= zoom;
