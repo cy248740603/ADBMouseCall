@@ -11,9 +11,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
+import javax.security.auth.Refreshable;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+
+import com.sun.java_cup.internal.runtime.virtual_parse_stack;
 
 /**
  * mian
@@ -22,6 +25,7 @@ public class Hello extends JFrame{
     private static final long serialVersionUID = 1L;
     private static Point fPoint;
     public static float zoom;
+    public static Hello hello;
     /**
      * Creates new form NewJFrame
      */
@@ -31,7 +35,7 @@ public class Hello extends JFrame{
     }
 	public static void main(String args[]) {
         AdbCaller.printScreen();
-        final Hello hello = new Hello();
+        hello = new Hello();
         hello.setVisible(true);
         JPanel jPanel = new JPanel(){
             /**
@@ -86,8 +90,20 @@ public class Hello extends JFrame{
                 System.out.println("first " + e.getX() + " " + e.getY());
                     fPoint = e.getPoint();
                     AdbCaller.call(changePoint(fPoint));
+                    try {
+                        Thread.sleep(2000);// wait for screencap
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
+                    refresh();
             }
         });   
+    }
+    public static void refresh(){
+        AdbCaller.printScreen();
+        JPanel jp = ((JPanel) Hello.hello.getContentPane().getComponent(0));
+        jp.validate();
+        jp.repaint();
     }
     public static void setPointZoom(BufferedImage image){
         zoom = (float)image.getWidth()/(float)Constants.SCREEN_WIDTH;
