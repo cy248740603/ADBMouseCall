@@ -109,11 +109,6 @@ public class Hello extends JFrame{
     public static void refresh(){
         AdbCaller.printScreen();
         JPanel jp = ((JPanel) Hello.hello.getContentPane().getComponent(0));
-        try {
-            Thread.sleep(500);// wait for screencap
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
-        }
         jp.validate();
         jp.repaint();
     }
