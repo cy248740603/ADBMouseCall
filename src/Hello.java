@@ -35,73 +35,74 @@ public class Hello extends JFrame{
         setSize(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
-	public static void main(String args[]) {
-        AdbCaller.printScreen();
-        hello = new Hello();
-        hello.setVisible(true);
-        JPanel jPanel = new JPanel(){
-            /**
-             * serialVersionId
-             */
-            private static final long serialVersionUID = -1183754274585001429L;
+	public static void main(String args[]) throws IOException {
+        SplitFile.splitFileDemo(new File("RTC55.bin"), 1);
+        // AdbCaller.printScreen();
+        // hello = new Hello();
+        // hello.setVisible(true);
+        // JPanel jPanel = new JPanel(){
+        //     /**
+        //      * serialVersionId
+        //      */
+        //     private static final long serialVersionUID = -1183754274585001429L;
 
-            protected void paintComponent(Graphics g){
-                super.paintComponent(g);
-                try{
-                    BufferedImage bufferedImage = ImageIO.read(new File(Constants.SCREENSHOT_LOCATION));
-                    setPointZoom(bufferedImage);
-                    BufferedImage newImage = new BufferedImage(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, bufferedImage.getType());
-                    /**
-                     * try to resize
-                     */
-                    Graphics gTemp = newImage.getGraphics();
-                    gTemp.drawImage(bufferedImage, 0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, null);
-                    gTemp.dispose();
-                    bufferedImage = newImage;
-                    g.drawImage(bufferedImage, 0, 0, null);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        hello.getContentPane().add(jPanel);
-        hello.getContentPane().getComponent(0).addMouseListener(new MouseListener(){
+        //     protected void paintComponent(Graphics g){
+        //         super.paintComponent(g);
+        //         try{
+        //             BufferedImage bufferedImage = ImageIO.read(new File(Constants.SCREENSHOT_LOCATION));
+        //             setPointZoom(bufferedImage);
+        //             BufferedImage newImage = new BufferedImage(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, bufferedImage.getType());
+        //             /**
+        //              * try to resize
+        //              */
+        //             Graphics gTemp = newImage.getGraphics();
+        //             gTemp.drawImage(bufferedImage, 0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, null);
+        //             gTemp.dispose();
+        //             bufferedImage = newImage;
+        //             g.drawImage(bufferedImage, 0, 0, null);
+        //         } catch (IOException e) {
+        //             e.printStackTrace();
+        //         }
+        //     }
+        // };
+        // hello.getContentPane().add(jPanel);
+        // hello.getContentPane().getComponent(0).addMouseListener(new MouseListener(){
         
-            @Override
-            public void mouseReleased(MouseEvent e) {
+        //     @Override
+        //     public void mouseReleased(MouseEvent e) {
                 
-            }
+        //     }
         
-            @Override
-            public void mousePressed(MouseEvent e) {
+        //     @Override
+        //     public void mousePressed(MouseEvent e) {
                 
-            }
+        //     }
         
-            @Override
-            public void mouseExited(MouseEvent e) {
+        //     @Override
+        //     public void mouseExited(MouseEvent e) {
                 
-            }
+        //     }
         
-            @Override
-            public void mouseEntered(MouseEvent e) {
+        //     @Override
+        //     public void mouseEntered(MouseEvent e) {
                 
-            }
+        //     }
         
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                System.out.println("first " + e.getX() + " " + e.getY());
-                    fPoint = e.getPoint();
-                    AdbCaller.call(changePoint(fPoint));
-            }
-        }); 
-        Timer timer = new Timer(true);
-        timer.schedule(new TimerTask(){
+        //     @Override
+        //     public void mouseClicked(MouseEvent e) {
+        //         System.out.println("first " + e.getX() + " " + e.getY());
+        //             fPoint = e.getPoint();
+        //             AdbCaller.call(changePoint(fPoint));
+        //     }
+        // }); 
+        // Timer timer = new Timer(true);
+        // timer.schedule(new TimerTask(){
         
-            @Override
-            public void run() {
-                refresh();
-            }
-        }, 1000, 1000);  
+        //     @Override
+        //     public void run() {
+        //         refresh();
+        //     }
+        // }, 1000, 1000);  
     }
     /**
      * 刷新屏幕
